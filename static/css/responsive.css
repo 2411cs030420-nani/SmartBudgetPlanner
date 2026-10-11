@@ -1,0 +1,339 @@
+/* =========================================
+   SMART BUDGET PLANNER
+   COMMON RESPONSIVE CSS
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+
+/* =========================================
+   IMAGES
+========================================= */
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* =========================================
+   FORMS
+========================================= */
+
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+}
+
+input,
+select,
+textarea {
+    font-size: 16px;
+}
+
+
+/* =========================================
+   TABLES
+========================================= */
+
+.table-container,
+table {
+    max-width: 100%;
+}
+
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+}
+
+
+/* =========================================
+   COMMON CONTAINERS
+========================================= */
+
+.container {
+    width: 100%;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =========================================
+   GRIDS
+========================================= */
+
+.summary-cards,
+.navigation-grid,
+.monthly-summary-grid,
+.intelligence-grid,
+.goal-values,
+.budget-info,
+.category-budget-values {
+    width: 100%;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    body {
+        padding: 20px !important;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .summary-cards {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .navigation-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .monthly-summary-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .intelligence-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .goal-values {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .budget-info {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .category-budget-values {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 15px !important;
+        font-size: 15px;
+    }
+
+
+    h1 {
+        font-size: 26px;
+    }
+
+    h2 {
+        font-size: 21px;
+    }
+
+    h3 {
+        font-size: 17px;
+    }
+
+
+    /* -------------------------
+       CONTAINERS
+    ------------------------- */
+
+    .container {
+        width: 100%;
+        padding: 0;
+    }
+
+
+    /* -------------------------
+       CARDS
+    ------------------------- */
+
+    .card,
+    .budget-card,
+    .goal-card,
+    .summary-card,
+    .monthly-card,
+    .intelligence-card,
+    .metric-card,
+    .category-budget-card,
+    .budget-form {
+        width: 100%;
+        padding: 18px !important;
+    }
+
+
+    /* -------------------------
+       GRIDS
+    ------------------------- */
+
+    .summary-cards,
+    .navigation-grid,
+    .monthly-summary-grid,
+    .intelligence-grid,
+    .goal-values,
+    .budget-info,
+    .category-budget-values {
+        grid-template-columns: 1fr !important;
+    }
+
+
+    /* -------------------------
+       NAVIGATION
+    ------------------------- */
+
+    .nav-card {
+        width: 100%;
+        min-height: 100px;
+    }
+
+
+    /* -------------------------
+       FORMS
+    ------------------------- */
+
+    form {
+        width: 100%;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    button {
+        width: 100%;
+        min-height: 44px;
+    }
+
+
+    /* -------------------------
+       LINKS / BUTTONS
+    ------------------------- */
+
+    .back,
+    .logout-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+
+    /* -------------------------
+       GOAL HEADER
+    ------------------------- */
+
+    .goal-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+
+
+    /* -------------------------
+       BUDGET HEADER
+    ------------------------- */
+
+    .budget-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+
+    /* -------------------------
+       PROGRESS
+    ------------------------- */
+
+    .progress-container,
+    .health-progress {
+        width: 100%;
+    }
+
+
+    /* -------------------------
+       TEXT
+    ------------------------- */
+
+    .intelligence-value {
+        font-size: 24px;
+    }
+
+
+    /* -------------------------
+       TABLES
+    ------------------------- */
+
+    table {
+        min-width: 600px;
+    }
+
+
+    /* -------------------------
+       FOOTER
+    ------------------------- */
+
+    .dashboard-footer {
+        text-align: center;
+        padding: 20px 10px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL PHONES
+========================================= */
+
+@media (max-width: 400px) {
+
+    body {
+        padding: 10px !important;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    h2 {
+        font-size: 19px;
+    }
+
+    .nav-card {
+        min-height: 90px;
+        padding: 15px !important;
+    }
+
+    .summary-card p,
+    .monthly-card p {
+        font-size: 21px;
+    }
+
+}

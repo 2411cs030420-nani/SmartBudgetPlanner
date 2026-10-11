@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Income - Smart Budget Planner</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/responsive.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .page {
+            width: min(1100px, 94%);
+            margin: auto;
+            padding: 30px 0;
+        }
+
+        .topbar {
+            background: #111827;
+            color: white;
+            padding: 20px 24px;
+            border-radius: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .topbar p {
+            margin: 5px 0 0;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .back {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            padding: 10px 14px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e8edf4;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(15,23,42,0.05);
+            max-width: 760px;
+            margin: auto;
+        }
+
+        .card-title {
+            margin-bottom: 25px;
+        }
+
+        .card-title h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .card-title p {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            background: #f8fafc;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #6366f1;
+            background: white;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: none;
+            border-radius: 11px;
+            background: #4f46e5;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background: #4338ca;
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: #dcfce7;
+            border-radius: 13px;
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 650px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="topbar">
+        <div>
+            <h1>💰 Add Income</h1>
+            <p>Record your income and keep your finances up to date.</p>
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="back">
+            ← Dashboard
+        </a>
+    </div>
+
+    <div class="card">
+
+        <div class="icon-box">💰</div>
+
+        <div class="card-title">
+            <h2>Income Details</h2>
+            <p>Enter the details of your income transaction.</p>
+        </div>
+
+        <form method="POST">
+
+            <div class="form-grid">
+
+                <div>
+                    <label>Amount</label>
+                    <input
+                        type="number"
+                        name="amount"
+                        step="0.01"
+                        min="0"
+                        placeholder="₹ 5000"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Source</label>
+                    <input
+                        type="text"
+                        name="source"
+                        placeholder="Salary / Freelance / Business"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Date</label>
+                    <input
+                        type="date"
+                        name="date"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Description</label>
+                    <input
+                        type="text"
+                        name="description"
+                        placeholder="Monthly salary"
+                    >
+                </div>
+
+            </div>
+
+            <button type="submit" class="submit-btn">
+                + Add Income
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

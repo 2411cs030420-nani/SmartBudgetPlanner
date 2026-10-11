@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Financial Analytics - Smart Budget Planner</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/responsive.css') }}">
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 30px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .page-title {
+            margin-bottom: 30px;
+            font-size: 36px;
+        }
+
+
+        /* -------------------------
+           SUMMARY CARDS
+        ------------------------- */
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin: 0 0 12px 0;
+            color: #555;
+            font-size: 17px;
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+
+        /* -------------------------
+           FINANCIAL HEALTH
+        ------------------------- */
+
+        .section-title {
+            margin-top: 35px;
+            margin-bottom: 18px;
+        }
+
+        .health-card {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .health-score {
+            font-size: 55px;
+            font-weight: bold;
+            margin: 5px 0 10px;
+        }
+
+        .health-status {
+            font-size: 25px;
+            margin: 10px 0;
+        }
+
+        .health-message {
+            max-width: 700px;
+            margin: 15px auto 0;
+            color: #555;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+
+        /* -------------------------
+           EXTRA METRICS
+        ------------------------- */
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .metric-card h3 {
+            margin-top: 0;
+            color: #555;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+
+        /* -------------------------
+           CHARTS
+        ------------------------- */
+
+        .charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .chart-box {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .chart-box h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+        }
+
+
+        /* -------------------------
+           BACK BUTTON
+        ------------------------- */
+
+        .back {
+            display: inline-block;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding: 12px 18px;
+            background: #222;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .back:hover {
+            opacity: 0.85;
+        }
+
+
+        /* -------------------------
+           RESPONSIVE
+        ------------------------- */
+
+        @media (max-width: 900px) {
+
+            .summary {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .charts {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 28px;
+            }
+
+        }
+        .recommendation-card {
+    background: white;
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+.recommendation-card ul {
+    margin: 0;
+    padding-left: 25px;
+}
+
+.recommendation-card li {
+    margin-bottom: 14px;
+    line-height: 1.6;
+    color: #444;
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- PAGE TITLE -->
+
+    <h1 class="page-title">
+        📊 Financial Analytics
+    </h1>
+
+
+    <!-- =========================
+         FINANCIAL SUMMARY
+    ========================== -->
+
+    <div class="summary">
+
+        <div class="card">
+
+            <h3>Total Income</h3>
+
+            <p>
+                ₹{{ "%.2f"|format(total_income) }}
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Total Expenses</h3>
+
+            <p>
+                ₹{{ "%.2f"|format(total_expenses) }}
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Total Savings</h3>
+
+            <p>
+                ₹{{ "%.2f"|format(total_savings) }}
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>Savings Rate</h3>
+
+            <p>
+                {{ "%.2f"|format(savings_rate) }}%
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         FINANCIAL HEALTH
+    ========================== -->
+
+    <h2 class="section-title">
+        🧠 Financial Health
+    </h2>
+
+
+    <div class="health-card">
+
+        <div class="health-score">
+
+            {{ health_score }}/100
+
+        </div>
+
+
+        <div class="health-status">
+
+            {{ health_status }}
+
+        </div>
+
+
+        <p class="health-message">
+
+            {{ health_message }}
+
+        </p>
+
+    </div>
+
+
+
+    <!-- =========================
+         ADDITIONAL METRICS
+    ========================== -->
+
+    <div class="metrics">
+
+        <div class="metric-card">
+
+            <h3>
+                Expense-to-Income Ratio
+            </h3>
+
+            <div class="metric-value">
+
+                {{ "%.2f"|format(expense_ratio) }}%
+
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <h3>
+                Highest Category Concentration
+            </h3>
+
+            <div class="metric-value">
+
+                {{ "%.2f"|format(concentration) }}%
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         SPENDING BEHAVIOR ANALYSIS
+    ========================== -->
+
+    <h2 class="section-title">
+
+        🔍 Spending Behavior Analysis
+
+    </h2>
+
+
+    <div class="metrics">
+
+
+        <div class="metric-card">
+
+            <h3>
+
+                🏆 Highest Spending Category
+
+            </h3>
+
+
+            <div class="metric-value">
+
+                {{ highest_category }}
+
+            </div>
+
+
+            <p>
+
+                ₹{{ "%.2f"|format(highest_category_amount) }}
+
+                ({{ "%.2f"|format(highest_category_percentage) }}%)
+
+            </p>
+
+        </div>
+
+
+
+        <div class="metric-card">
+
+            <h3>
+
+                📊 Spending Status
+
+            </h3>
+
+
+            <div class="metric-value">
+
+                {{ spending_status }}
+
+            </div>
+
+
+            <p>
+
+                {{ spending_message }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="metric-card">
+
+            <h3>
+
+                📈 Monthly Trend
+
+            </h3>
+
+
+            <div class="metric-value">
+
+                {{ "%.2f"|format(monthly_change) }}%
+
+            </div>
+
+
+            <p>
+
+                {{ trend_message }}
+
+            </p>
+
+        </div>
+
+
+
+        <div class="metric-card">
+
+            <h3>
+
+                💡 Smart Recommendation
+
+            </h3>
+
+
+            <p>
+
+                {{ recommendation }}
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+<h2 class="section-title">
+    🔮 Future Expense Prediction
+</h2>
+
+<div class="metrics">
+
+    <div class="metric-card">
+        <h3>
+            📅 Predicted Next-Month Expense
+        </h3>
+
+        <div class="metric-value">
+            ₹{{ "%.2f"|format(predicted_expense) }}
+        </div>
+    </div>
+
+    <div class="metric-card">
+        <h3>
+            📊 Historical Average Expense
+        </h3>
+
+        <div class="metric-value">
+            ₹{{ "%.2f"|format(average_expense) }}
+        </div>
+    </div>
+
+    <div class="metric-card">
+        <h3>
+            📈 Prediction Change
+        </h3>
+
+        <div class="metric-value">
+            {{ "%.2f"|format(prediction_change) }}%
+        </div>
+    </div>
+
+    <div class="metric-card">
+        <h3>
+            🤖 Prediction Status
+        </h3>
+
+        <div class="metric-value">
+            {{ prediction_status }}
+        </div>
+
+        <p>
+            {{ prediction_message }}
+        </p>
+    </div>
+
+</div>
+<!-- =========================
+     FINANCIAL RISK DETECTION
+========================== -->
+
+<h2 class="section-title">
+    ⚠️ Financial Risk Detection
+</h2>
+
+<div class="metrics">
+
+    <div class="metric-card">
+        <h3>🎯 Risk Score</h3>
+
+        <div class="metric-value">
+            {{ "%.0f"|format(risk_score) }}/100
+        </div>
+    </div>
+
+
+    <div class="metric-card">
+        <h3>🚦 Risk Level</h3>
+
+        <div class="metric-value">
+            {{ risk_level }}
+        </div>
+    </div>
+
+
+    <div class="metric-card">
+        <h3>📊 Predicted Expense Ratio</h3>
+
+        <div class="metric-value">
+            {{ "%.2f"|format(predicted_expense_ratio) }}%
+        </div>
+    </div>
+
+
+    <div class="metric-card">
+        <h3>💡 Risk Analysis</h3>
+
+        <p>
+            {{ risk_message }}
+        </p>
+    </div>
+
+</div>
+<!-- =========================
+     SMART RECOMMENDATIONS
+========================== -->
+
+<h2 class="section-title">
+    🤖 Smart Recommendations
+</h2>
+
+<div class="recommendation-card">
+
+    {% if smart_recommendations %}
+
+        <ul>
+            {% for recommendation in smart_recommendations %}
+                <li>
+                    💡 {{ recommendation }}
+                </li>
+            {% endfor %}
+        </ul>
+
+    {% else %}
+
+        <p>
+            Your financial pattern is balanced.
+            Continue tracking your income and expenses regularly.
+        </p>
+
+    {% endif %}
+
+    </div>
+   <!-- =========================
+         CHARTS
+    ========================== -->
+
+    <div class="charts">
+
+
+        <!-- MONTHLY SPENDING -->
+
+        <div class="chart-box">
+
+            <h2>
+
+                📈 Monthly Spending
+
+            </h2>
+
+
+            <div class="chart-container">
+
+                <canvas id="monthlyChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CATEGORY SPENDING -->
+
+        <div class="chart-box">
+
+            <h2>
+
+                🍩 Spending by Category
+
+            </h2>
+
+
+            <div class="chart-container">
+
+                <canvas id="categoryChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- BACK -->
+
+    <a
+        class="back"
+        href="{{ url_for('dashboard') }}"
+    >
+
+        ← Back to Dashboard
+
+    </a>
+
+
+</div>
+
+
+
+<!-- ==================================================
+     HIDDEN DATA FROM FLASK / JINJA
+================================================== -->
+
+<div id="monthlyData" style="display:none;">
+
+    {% for item in monthly_expenses %}
+
+        <span
+            data-month="{{ item.month }}"
+            data-total="{{ item.total }}"
+        ></span>
+
+    {% endfor %}
+
+</div>
+
+
+<div id="categoryData" style="display:none;">
+
+    {% for item in category_expenses %}
+
+        <span
+            data-category="{{ item.category }}"
+            data-total="{{ item.total }}"
+        ></span>
+
+    {% endfor %}
+
+</div>
+
+
+
+<script>
+
+
+    /* =========================
+       MONTHLY DATA
+    ========================= */
+
+    const monthlyItems =
+        document.querySelectorAll(
+            "#monthlyData span"
+        );
+
+
+    const monthlyLabels = [];
+
+    const monthlyValues = [];
+
+
+    monthlyItems.forEach(item => {
+
+        monthlyLabels.push(
+            item.dataset.month
+        );
+
+        monthlyValues.push(
+            Number(item.dataset.total)
+        );
+
+    });
+
+
+
+    /* =========================
+       CATEGORY DATA
+    ========================= */
+
+    const categoryItems =
+        document.querySelectorAll(
+            "#categoryData span"
+        );
+
+
+    const categoryLabels = [];
+
+    const categoryValues = [];
+
+
+    categoryItems.forEach(item => {
+
+        categoryLabels.push(
+            item.dataset.category
+        );
+
+        categoryValues.push(
+            Number(item.dataset.total)
+        );
+
+    });
+
+
+
+    /* =========================
+       MONTHLY CHART
+    ========================= */
+
+    const monthlyCanvas =
+        document.getElementById(
+            "monthlyChart"
+        );
+
+
+    new Chart(
+        monthlyCanvas,
+        {
+
+            type: "bar",
+
+            data: {
+
+                labels: monthlyLabels,
+
+                datasets: [
+
+                    {
+
+                        label:
+                            "Monthly Expenses (₹)",
+
+                        data:
+                            monthlyValues,
+
+                        borderWidth: 1
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true
+
+                    }
+
+                }
+
+            }
+
+        }
+    );
+
+
+
+    /* =========================
+       CATEGORY CHART
+    ========================= */
+
+    const categoryCanvas =
+        document.getElementById(
+            "categoryChart"
+        );
+
+
+    new Chart(
+        categoryCanvas,
+        {
+
+            type: "doughnut",
+
+            data: {
+
+                labels: categoryLabels,
+
+                datasets: [
+
+                    {
+
+                        label:
+                            "Expenses",
+
+                        data:
+                            categoryValues,
+
+                        borderWidth: 1
+
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>s

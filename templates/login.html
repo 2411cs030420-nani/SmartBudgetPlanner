@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login - Smart Budget Planner</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/responsive.css') }}"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef2ff 0%,
+                    #f8fafc 50%,
+                    #ecfeff 100%
+                );
+
+            color: #172033;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 25px;
+        }
+
+
+        /* =================================
+           MAIN CONTAINER
+        ================================= */
+
+        .login-container {
+
+            width: min(950px, 100%);
+
+            min-height: 560px;
+
+            background: white;
+
+            border-radius: 24px;
+
+            overflow: hidden;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            box-shadow:
+                0 25px 70px
+                rgba(15, 23, 42, 0.12);
+        }
+
+
+        /* =================================
+           LEFT BRAND PANEL
+        ================================= */
+
+        .brand-panel {
+
+            padding: 50px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #111827,
+                    #1e293b
+                );
+
+            color: white;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: space-between;
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .brand-panel::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+            height: 280px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(99, 102, 241, 0.18);
+
+            top: -100px;
+            right: -80px;
+        }
+
+
+        .brand-panel::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+            height: 220px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(34, 211, 238, 0.10);
+
+            bottom: -90px;
+            left: -70px;
+        }
+
+
+        .brand-content,
+        .brand-bottom {
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .logo {
+
+            width: 52px;
+            height: 52px;
+
+            border-radius: 15px;
+
+            display: grid;
+            place-items: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #06b6d4
+                );
+
+            font-size: 25px;
+
+            margin-bottom: 28px;
+        }
+
+
+        .brand-panel h1 {
+
+            margin: 0;
+
+            font-size: 34px;
+
+            line-height: 1.15;
+
+            letter-spacing: -1px;
+        }
+
+
+        .brand-panel .tagline {
+
+            margin-top: 16px;
+
+            color: #cbd5e1;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+            max-width: 340px;
+        }
+
+
+        .features {
+
+            margin-top: 30px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 14px;
+        }
+
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+            color: #e2e8f0;
+
+            font-size: 13px;
+        }
+
+
+        .feature-icon {
+
+            width: 31px;
+            height: 31px;
+
+            border-radius: 9px;
+
+            display: grid;
+            place-items: center;
+
+            background:
+                rgba(255,255,255,0.08);
+        }
+
+
+        .brand-bottom {
+
+            color: #94a3b8;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =================================
+           FORM PANEL
+        ================================= */
+
+        .form-panel {
+
+            padding: 55px 48px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .form-container {
+
+            width: 100%;
+
+            max-width: 370px;
+        }
+
+
+        .form-container h2 {
+
+            margin: 0;
+
+            font-size: 30px;
+
+            letter-spacing: -0.5px;
+        }
+
+
+        .form-subtitle {
+
+            margin: 8px 0 30px;
+
+            color: #94a3b8;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =================================
+           FORM
+        ================================= */
+
+        .field {
+
+            margin-bottom: 18px;
+        }
+
+
+        .field label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color: #334155;
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+        }
+
+
+        .input-icon {
+
+            position: absolute;
+
+            left: 13px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            font-size: 16px;
+
+            opacity: 0.7;
+        }
+
+
+        .input-wrapper input {
+
+            width: 100%;
+
+            padding:
+                13px
+                14px
+                13px
+                42px;
+
+            border: 1px solid #dbe2ea;
+
+            border-radius: 11px;
+
+            background: #f8fafc;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        .input-wrapper input:focus {
+
+            background: white;
+
+            border-color: #6366f1;
+
+            box-shadow:
+                0 0 0 4px
+                rgba(99,102,241,0.10);
+        }
+
+
+        /* =================================
+           BUTTON
+        ================================= */
+
+        .login-btn {
+
+            width: 100%;
+
+            border: none;
+
+            padding: 14px;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #4f46e5,
+                    #6366f1
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 8px 18px
+                rgba(79,70,229,0.22);
+
+            transition: 0.2s;
+        }
+
+
+        .login-btn:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 12px 25px
+                rgba(79,70,229,0.28);
+        }
+
+
+        .login-btn:active {
+
+            transform: scale(0.98);
+        }
+
+
+        /* =================================
+           REGISTER
+        ================================= */
+
+        .register {
+
+            margin-top: 22px;
+
+            text-align: center;
+
+            font-size: 13px;
+
+            color: #64748b;
+        }
+
+
+        .register a {
+
+            color: #4f46e5;
+
+            font-weight: 700;
+
+            text-decoration: none;
+        }
+
+
+        .register a:hover {
+
+            text-decoration: underline;
+        }
+
+
+        /* =================================
+           MOBILE
+        ================================= */
+
+        @media (max-width: 750px) {
+
+            body {
+
+                padding: 15px;
+
+            }
+
+
+            .login-container {
+
+                grid-template-columns: 1fr;
+
+                min-height: auto;
+
+            }
+
+
+            .brand-panel {
+
+                padding: 30px;
+
+            }
+
+
+            .brand-panel h1 {
+
+                font-size: 28px;
+
+            }
+
+
+            .features {
+
+                display: none;
+
+            }
+
+
+            .brand-bottom {
+
+                margin-top: 30px;
+
+            }
+
+
+            .form-panel {
+
+                padding: 35px 25px;
+
+            }
+
+        }
+
+
+        @media (max-width: 450px) {
+
+            .brand-panel {
+
+                padding: 25px;
+
+            }
+
+            .form-panel {
+
+                padding: 30px 20px;
+
+            }
+
+            .form-container h2 {
+
+                font-size: 26px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <!-- =================================
+         BRAND
+    ================================== -->
+
+    <section class="brand-panel">
+
+        <div class="brand-content">
+
+            <div class="logo">
+                💰
+            </div>
+
+
+            <h1>
+                Smart Budget Planner
+            </h1>
+
+
+            <p class="tagline">
+                Take control of your money with
+                intelligent financial tracking,
+                analysis and planning.
+            </p>
+
+
+            <div class="features">
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        📊
+                    </div>
+
+                    Smart Financial Analytics
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🔮
+                    </div>
+
+                    Expense Prediction
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        🎯
+                    </div>
+
+                    Budget & Goal Tracking
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+                        💡
+                    </div>
+
+                    Intelligent Recommendations
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="brand-bottom">
+
+            Track • Analyze • Predict • Plan • Improve
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================
+         LOGIN FORM
+    ================================== -->
+
+    <section class="form-panel">
+
+        <div class="form-container">
+
+            <h2>
+                Welcome back 👋
+            </h2>
+
+
+            <p class="form-subtitle">
+                Sign in to continue managing
+                your financial journey.
+            </p>
+
+
+            <form method="POST">
+
+
+                <!-- EMAIL -->
+
+                <div class="field">
+
+                    <label>
+                        Email Address
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            ✉️
+                        </span>
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="field">
+
+                    <label>
+                        Password
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            🔒
+                        </span>
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                >
+                    Sign In →
+                </button>
+
+
+            </form>
+
+
+            <div class="register">
+
+                Don't have an account?
+
+                <a href="{{ url_for('register') }}">
+                    Create an account
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+</body>
+
+</html>

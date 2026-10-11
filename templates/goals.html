@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Financial Goals - Smart Budget Planner
+    </title>
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/responsive.css') }}">
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            padding: 30px;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f6f8;
+
+            color: #222;
+        }
+
+
+        .container {
+
+            max-width: 950px;
+
+            margin: auto;
+        }
+
+
+        h1 {
+
+            margin-bottom: 25px;
+        }
+
+
+        .summary {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .summary-card {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 14px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.08);
+        }
+
+
+        .summary-card h3 {
+
+            margin-top: 0;
+
+            font-size: 15px;
+        }
+
+
+        .summary-card p {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            margin-bottom: 0;
+        }
+
+
+        .card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.08);
+        }
+
+
+        label {
+
+            display: block;
+
+            font-weight: bold;
+
+            margin-top: 12px;
+        }
+
+
+        input {
+
+            width: 100%;
+
+            max-width: 450px;
+
+            padding: 11px;
+
+            margin-top: 6px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+        }
+
+
+        button {
+
+            border: none;
+
+            padding: 10px 16px;
+
+            border-radius: 7px;
+
+            background: #222;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-weight: bold;
+
+            margin-top: 15px;
+        }
+
+
+        button:hover {
+
+            opacity: 0.85;
+        }
+
+
+        .goal-card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            margin-bottom: 20px;
+
+            box-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.08);
+        }
+
+
+        .goal-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .goal-header h2 {
+
+            margin: 0;
+        }
+
+
+        .status {
+
+            padding: 7px 12px;
+
+            border-radius: 20px;
+
+            font-weight: bold;
+
+            font-size: 13px;
+        }
+
+
+        .completed {
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+
+        .on-track {
+
+            background: #dbeafe;
+
+            color: #1e40af;
+        }
+
+
+        .attention {
+
+            background: #fef3c7;
+
+            color: #92400e;
+        }
+
+
+        .progress-container {
+
+            width: 100%;
+
+            height: 16px;
+
+            background: #e5e7eb;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            margin: 18px 0;
+        }
+
+
+        .progress-bar {
+
+            height: 100%;
+
+            background: #22c55e;
+
+            border-radius: 10px;
+
+            transition: width 0.5s ease;
+        }
+
+
+        .goal-values {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 12px;
+        }
+
+
+        .goal-value {
+
+            background: #f4f6f8;
+
+            padding: 14px;
+
+            border-radius: 8px;
+        }
+
+
+        .intelligence {
+
+            margin-top: 18px;
+
+            padding: 16px;
+
+            border-radius: 10px;
+
+            background: #f8fafc;
+
+            border-left: 5px solid #3b82f6;
+        }
+
+
+        .intelligence strong {
+
+            display: block;
+
+            margin-bottom: 6px;
+        }
+
+
+        .update-form {
+
+            margin-top: 18px;
+        }
+
+
+        .delete-form {
+
+            display: inline;
+        }
+
+
+        .delete-btn {
+
+            background: #dc2626;
+        }
+
+
+        .back {
+
+            display: inline-block;
+
+            padding: 12px 18px;
+
+            background: #222;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+        }
+
+
+        .empty {
+
+            text-align: center;
+
+            padding: 25px;
+        }
+
+
+        @media (max-width: 700px) {
+
+            body {
+
+                padding: 15px;
+            }
+
+
+            .summary {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .goal-values {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .goal-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <h1>
+        🎯 Financial Goals
+    </h1>
+
+
+    <!-- =================================
+         MONTHLY SAVING SUMMARY
+    ================================== -->
+
+    <div class="summary">
+
+        <div class="summary-card">
+
+            <h3>
+                💰 Monthly Income
+            </h3>
+
+            <p>
+                ₹{{ "%.0f"|format(monthly_income) }}
+            </p>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <h3>
+                💸 Monthly Expenses
+            </h3>
+
+            <p>
+                ₹{{ "%.0f"|format(monthly_expenses) }}
+            </p>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <h3>
+                💵 Monthly Savings
+            </h3>
+
+            <p>
+                ₹{{ "%.0f"|format(monthly_savings) }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         CREATE GOAL
+    ================================== -->
+
+    <div class="card">
+
+        <h2>
+            Create Financial Goal
+        </h2>
+
+
+        <form method="POST">
+
+            <input
+                type="hidden"
+                name="action"
+                value="add"
+            >
+
+
+            <label>
+                Goal Name
+            </label>
+
+            <input
+                type="text"
+                name="goal_name"
+                placeholder="Example: Buy Laptop"
+                required
+            >
+
+
+            <label>
+                Target Amount
+            </label>
+
+            <input
+                type="number"
+                name="target_amount"
+                step="0.01"
+                min="1"
+                placeholder="80000"
+                required
+            >
+
+
+            <br>
+
+
+            <button type="submit">
+
+                🎯 Create Goal
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- =================================
+         GOALS
+    ================================== -->
+
+    <h2>
+        My Goals
+    </h2>
+
+
+    {% if goals %}
+
+        {% for goal in goals %}
+
+            <div class="goal-card">
+
+
+                <!-- HEADER -->
+
+                <div class="goal-header">
+
+                    <h2>
+                        🎯 {{ goal.goal_name }}
+                    </h2>
+
+
+                    {% if goal.goal_status == "Completed" %}
+
+                        <span class="status completed">
+                            🎉 Completed
+                        </span>
+
+                    {% elif goal.goal_status == "On Track" %}
+
+                        <span class="status on-track">
+                            🟢 On Track
+                        </span>
+
+                    {% else %}
+
+                        <span class="status attention">
+                            🟠 Needs Attention
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PROGRESS -->
+
+                <div class="progress-container">
+
+                    <div
+                        class="progress-bar"
+                        style="
+                            width:
+                            {{ goal.progress }}%;
+                        "
+                    ></div>
+
+                </div>
+
+
+                <strong>
+                    {{ "%.1f"|format(goal.progress) }}%
+                    Complete
+                </strong>
+
+
+                <!-- VALUES -->
+
+                <div class="goal-values">
+
+                    <div class="goal-value">
+
+                        <strong>
+                            Target
+                        </strong>
+
+                        <br>
+
+                        ₹{{ "%.2f"|format(
+                            goal.target_amount
+                        ) }}
+
+                    </div>
+
+
+                    <div class="goal-value">
+
+                        <strong>
+                            Saved
+                        </strong>
+
+                        <br>
+
+                        ₹{{ "%.2f"|format(
+                            goal.saved_amount
+                        ) }}
+
+                    </div>
+
+
+                    <div class="goal-value">
+
+                        <strong>
+                            Remaining
+                        </strong>
+
+                        <br>
+
+                        ₹{{ "%.2f"|format(
+                            goal.remaining
+                        ) }}
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================
+                     GOAL INTELLIGENCE
+                ================================== -->
+
+                <div class="intelligence">
+
+                    <strong>
+                        🤖 Goal Intelligence
+                    </strong>
+
+
+                    {% if goal.goal_status == "Completed" %}
+
+                        🎉 You have reached your
+                        financial goal.
+
+                    {% elif goal.estimated_months %}
+
+                        At your current monthly savings
+                        of
+
+                        <strong>
+                            ₹{{ "%.0f"|format(
+                                monthly_savings
+                            ) }}
+                        </strong>
+
+                        you may reach this goal in
+                        approximately
+
+                        <strong>
+                            {{ goal.estimated_months }}
+                            month(s)
+                        </strong>.
+
+                    {% else %}
+
+                        {{ goal.goal_message }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- =================================
+                     UPDATE SAVINGS
+                ================================== -->
+
+                <form
+                    method="POST"
+                    class="update-form"
+                >
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="update"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="goal_id"
+                        value="{{ goal.id }}"
+                    >
+
+
+                    <label>
+                        Update Saved Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        name="saved_amount"
+                        step="0.01"
+                        min="0"
+                        value="{{ goal.saved_amount }}"
+                        required
+                    >
+
+
+                    <button type="submit">
+
+                        💰 Update Savings
+
+                    </button>
+
+                </form>
+
+
+                <!-- DELETE -->
+
+                <form
+                    method="POST"
+                    class="delete-form"
+                >
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="delete"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="goal_id"
+                        value="{{ goal.id }}"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="delete-btn"
+                    >
+
+                        🗑️ Delete Goal
+
+                    </button>
+
+                </form>
+
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="card empty">
+
+            <p>
+                No financial goals created yet.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="back"
+    >
+        ← Back to Dashboard
+    </a>
+
+
+</div>
+
+
+</body>
+
+</html>
